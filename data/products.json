@@ -1,0 +1,16 @@
+[
+    {
+        "id": "0.32988040741099933",
+        "title": "Galaxy Fold",
+        "imageUrl": "https://cnet3.cbsistatic.com/img/hBV_qc5BjX3nI_Ynxp4sZXivl0M=/2019/09/24/2e385c9e-58ca-4885-9081-f7ac1b8d7c7a/samsung-galaxy-fold-15.jpg",
+        "price": "2000",
+        "description": "The foldable phone"
+    },
+    {
+        "id": "0.4890243779222738",
+        "title": "Asus ROG 2",
+        "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/81SRRlYUoIL._SX425_.jpg",
+        "price": "1199.95",
+        "description": "ZS660KL-S855P-12G512G-BK"
+    }
+]
