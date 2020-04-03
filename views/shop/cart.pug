@@ -7,12 +7,12 @@ block content
     main
         if products.length > 0
             ul.cart__item-list
-                each product in products
+                each item in products
                     li.cart__item
-                        h2 #{product.title}
-                        h3 Quantity: #{product.quantity}
+                        h2 #{item.product.title}
+                        h3 Quantity: #{item.quantity}
                         form(action="/cart-delete-item", method="post")
-                            input(type="hidden", name="productId", value=product._id)
+                            input(type="hidden", name="productId", value=item.product._id)
                             button(type="submit").btn.danger Delete
             hr
             .centered
