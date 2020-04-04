@@ -5,6 +5,14 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const MongoSession = require("connect-mongodb-session")(session);
+
+// constants
+const MONGODB_URL = "mongodb://localhost:27017/shop";
+const SESSION_STORE = new MongoSession({
+    uri: MONGODB_URL,
+    collection: "sessions",
+});
 
 // routes
 const adminData = require("./routes/admin");
@@ -31,6 +39,7 @@ app.use(
         secret: "9$yJAd)Gw%2!rUhHh$!SIXDmbAc@GdG287qd9gdKf@q*JLP)qQ",
         resave: false,
         saveUninitialized: false,
+        store: SESSION_STORE,
     })
 );
 
@@ -50,7 +59,7 @@ app.use(errorController.get404);
 
 // database connection
 mongoose
-    .connect("mongodb://localhost:27017/shop", {
+    .connect(MONGODB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
