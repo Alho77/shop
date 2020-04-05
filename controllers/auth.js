@@ -7,6 +7,13 @@ exports.getLogin = (req, res, next) => {
         is_authenticated: req.session.isLoggedIn,
     });
 };
+exports.getSignUp = (req, res, next) => {
+    res.render("auth/signup", {
+        pageTitle: "Sign Up",
+        path: "/signup",
+        is_authenticated: req.session.isLoggedIn,
+    });
+};
 
 exports.postLogin = (req, res, next) => {
     User.findById("5e7bc98eec491e78d24e6ae3")
@@ -31,3 +38,5 @@ exports.postLogout = (req, res, next) => {
         res.redirect("/");
     });
 };
+
+exports.postSignUp = (req, res, next) => {};
