@@ -67,16 +67,6 @@ mongoose
         useUnifiedTopology: true,
     })
     .then(() => {
-        User.findOne().then((user) => {
-            if (!user) {
-                user = new User({
-                    name: "test",
-                    email: "test@test.com",
-                    cart: { items: [] },
-                });
-                user.save();
-            }
-        });
         app.listen(3000);
     })
     .catch((err) => console.log(err));

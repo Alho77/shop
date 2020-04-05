@@ -3,13 +3,13 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
     email: {
         type: String,
-        required: true
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true,
     },
     cart: {
         items: [
@@ -17,16 +17,16 @@ const userSchema = new Schema({
                 product: {
                     type: Schema.Types.ObjectId,
                     ref: "Product",
-                    required: true
+                    required: true,
                 },
-                quantity: { type: Number, required: true }
-            }
-        ]
-    }
+                quantity: { type: Number, required: true },
+            },
+        ],
+    },
 });
 
-userSchema.methods.addToCart = function(product) {
-    const cartProductIndex = this.cart.items.findIndex(cp => {
+userSchema.methods.addToCart = function (product) {
+    const cartProductIndex = this.cart.items.findIndex((cp) => {
         return cp.product.toString() === product._id.toString();
     });
     let newQuantity = 1;
@@ -36,14 +36,14 @@ userSchema.methods.addToCart = function(product) {
     } else {
         this.cart.items.push({
             product: product._id,
-            quantity: newQuantity
+            quantity: newQuantity,
         });
     }
     return this.save();
 };
 
-userSchema.methods.removeFromCart = function(productId) {
-    const updatedItems = this.cart.items.filter(item => {
+userSchema.methods.removeFromCart = function (productId) {
+    const updatedItems = this.cart.items.filter((item) => {
         return item.product.toString() !== productId.toString();
     });
     this.cart.items = updatedItems;
