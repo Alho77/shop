@@ -9,6 +9,7 @@ exports.getLogin = (req, res, next) => {
         is_authenticated: req.session.isLoggedIn,
     });
 };
+
 exports.getSignUp = (req, res, next) => {
     res.render("auth/signup", {
         pageTitle: "Sign Up",
@@ -18,16 +19,33 @@ exports.getSignUp = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-    User.findById("5e7bc98eec491e78d24e6ae3")
+    const email = req.body.email;
+    const password = req.body.password;
+
+    User.findOne({ email: email })
         .then((user) => {
-            req.session.isLoggedIn = true;
-            req.session.user = user;
-            req.session.save((err) => {
-                if (err) {
+            if (!user) {
+                return res.redirect("/login");
+            }
+            bcrypt
+                .compare(password, user.password)
+                .then((isMatched) => {
+                    if (isMatched) {
+                        req.session.isLoggedIn = true;
+                        req.session.user = user;
+                        return req.session.save((err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            res.redirect("/");
+                        });
+                    }
+                    res.redirect("/login");
+                })
+                .catch((err) => {
                     console.log(err);
-                }
-                res.redirect("/");
-            });
+                    res.redirect("/login");
+                });
         })
         .catch((err) => console.log(err));
 };
