@@ -90,7 +90,6 @@ exports.getOrder = (req, res, next) => {
                 });
             }
         });
-    // .then(orders => {});
 };
 
 exports.postOrder = (req, res, next) => {
