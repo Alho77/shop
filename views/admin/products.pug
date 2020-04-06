@@ -20,6 +20,7 @@ block content
                             a(href="/admin/edit-product/"+product._id+"?edit=true", title="edit").btn Edit
                             form(action="/admin/delete-product", method="post")
                                 input(type="hidden", name="productId", value=product._id)
+                                input(type="hidden", name="_csrf", value=csrfToken)
                                 button(type="submit").btn Delete
         else
             h1 No Products

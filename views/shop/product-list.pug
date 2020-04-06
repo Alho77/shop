@@ -21,7 +21,8 @@ block content
 
                             if is_authenticated
                                 form(action="/cart", method="post")
-                                    button(type="submit").btn Add to Cart
                                     input(type="hidden", name="productId", value=product._id)
+                                    input(type="hidden", name="_csrf", value=csrfToken)
+                                    button(type="submit").btn Add to Cart
         else
             h1 No Products
