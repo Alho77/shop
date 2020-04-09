@@ -6,6 +6,8 @@ block styles
 
 block content
     main
+        if errorMessage.length > 0
+            .user-message.user-message--error #{errorMessage}
         form.login-form(action="/login", method="POST")
             .form-control
                 label(for="email") E-Mail

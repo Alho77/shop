@@ -6,6 +6,7 @@ exports.getLogin = (req, res, next) => {
     res.render("auth/login", {
         pageTitle: "Login",
         path: "/login",
+        errorMessage: req.flash("error"),
     });
 };
 
@@ -24,6 +25,7 @@ exports.postLogin = (req, res, next) => {
     User.findOne({ email: email })
         .then((user) => {
             if (!user) {
+                req.flash("error", "Invalid email or password");
                 return res.redirect("/login");
             }
             bcrypt
@@ -39,6 +41,7 @@ exports.postLogin = (req, res, next) => {
                             res.redirect("/");
                         });
                     }
+                    req.flash("error", "Invalid email or password");
                     res.redirect("/login");
                 })
                 .catch((err) => {
