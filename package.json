@@ -23,7 +23,9 @@
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.6",
     "mysql2": "^2.1.0",
+    "nodemailer": "^6.4.6",
     "pug": "^2.0.4",
-    "sequelize": "^5.21.5"
+    "sequelize": "^5.21.5",
+    "superagent": "^5.2.2"
   }
 }

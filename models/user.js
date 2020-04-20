@@ -23,6 +23,8 @@ const userSchema = new Schema({
             },
         ],
     },
+    resetPassToken: String,
+    resetPassTokenExpiration: Date,
 });
 
 userSchema.methods.addToCart = function (product) {
