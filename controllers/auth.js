@@ -134,18 +134,18 @@ exports.postResetPassword = (req, res, next) => {
                 }
                 user.resetPassToken = token;
                 user.resetPassTokenExpiration = Date.now() + 3600000;
-                return user.save();
-            })
-            .then((result) => {
-                const url = `http://127.0.0.1:3000/reset-password/${token}`;
-                console.log(url);
+                return user.save().then((result) => {
+                    const url = `http://127.0.0.1:3000/reset-password/${token}`;
+                    console.log(url);
 
-                req.flash(
-                    "message",
-                    "The link has been sent to your email, check your mail"
-                );
-                res.redirect("/reset-password");
+                    req.flash(
+                        "message",
+                        "The link has been sent to your email, check your mail"
+                    );
+                    res.redirect("/reset-password");
+                });
             })
+
             .catch((err) => console.log(err));
     });
 };
