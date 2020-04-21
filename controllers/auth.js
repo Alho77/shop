@@ -1,14 +1,16 @@
 const crypto = require("crypto");
 
 const bcrypt = require("bcryptjs");
+const { validationResult } = require("express-validator/check");
 
 const User = require("../models/user");
 
 exports.getLogin = (req, res, next) => {
+    const errors = req.flash("error");
     res.render("auth/login", {
         pageTitle: "Login",
         path: "/login",
-        errorMessage: req.flash("error"),
+        errorMessage: errors,
     });
 };
 
@@ -39,16 +41,25 @@ exports.getResetPassword = (req, res, next) => {
 };
 
 exports.getSignUp = (req, res, next) => {
+    const errors = req.flash("error");
     res.render("auth/signup", {
         pageTitle: "Sign Up",
         path: "/signup",
-        enticated: req.session.isLoggedIn,
+        errorMessage: errors,
     });
 };
 
 exports.postLogin = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const { email, password } = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).render("auth/login", {
+            path: "/login",
+            pageTitle: "Login",
+            errorMessage: errors.array()[0].msg,
+        });
+    }
 
     User.findOne({ email: email })
         .then((user) => {
@@ -90,32 +101,33 @@ exports.postLogout = (req, res, next) => {
 };
 
 exports.postSignUp = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
+    const { email, password } = req.body;
 
-    User.findOne({ email: email })
-        .then((user) => {
-            if (user) {
-                return res.redirect("/signup");
-            }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).render("auth/signup", {
+            pageTitle: "Sign Up",
+            path: "/signup",
+            errorMessage: errors.array()[0].msg,
+        });
+    }
 
-            return bcrypt
-                .hash(password, 12)
-                .then((hashPassword) => {
-                    user = new User({
-                        email: email,
-                        password: hashPassword,
-                        cart: { items: [] },
-                    });
-                    return user.save();
-                })
-                .then(() => {
-                    res.redirect("/login");
-                });
+    bcrypt
+        .hash(password, 12)
+        .then((hashedPassword) => {
+            const user = new User({
+                email: email,
+                password: hashedPassword,
+                cart: { items: [] },
+            });
+            return user.save();
         })
-
-        .catch((err) => console.log(err));
+        .then(() => {
+            res.redirect("/login");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
 
 exports.postResetPassword = (req, res, next) => {
